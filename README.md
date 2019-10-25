@@ -1,3 +1,20 @@
+## This fork
+
+ * Updates the maven plugins and dependencies to latest (as of Oct 2019)
+ * Sets compilation source and targets to Java 1.8
+ * Moves `timestamp` as first field (beginnning of line) per company logging standards
+ 
+### configuration
+
+Use the following configuration to meet company logging standards:
+
+```
+log4j.appender.stdout.layout=org.jetbrains.appenders.JsonLayout
+log4j.appender.stdout.layout.includedFields=location
+log4j.appender.stdout.layout.excludedFields=mdc,ndc,version
+log4j.appender.stdout.layout.renamedFieldLabels=exception:error,exception.class:type,exception.stacktrace:stack,@timestamp:timestamp
+```
+
 ## Logstash Log4J Layout
 
 1. [What is it?](#what-is-it)

@@ -178,6 +178,15 @@ public class JsonLayout extends Layout {
         buf.append('{');
 
         boolean hasPrevField = false;
+
+        // timestamp MUST be at the beginning of the line
+        if (renderedFieldLabels.timestamp.isEnabled) {
+            date.setTime(event.getTimeStamp());
+            appendField(buf, renderedFieldLabels.timestamp.renderedLabel, dateFormat.format(date));
+            hasPrevField = true;
+            buf.append(',');
+        }
+
         if (renderedFieldLabels.exception.isEnabled) {
             hasPrevField = appendException(buf, event);
         }
@@ -258,14 +267,7 @@ public class JsonLayout extends Layout {
             hasPrevField = appendTags(buf, event);
         }
 
-        if (renderedFieldLabels.timestamp.isEnabled) {
-            if (hasPrevField) {
-                buf.append(',');
-            }
-            date.setTime(event.getTimeStamp());
-            appendField(buf, renderedFieldLabels.timestamp.renderedLabel, dateFormat.format(date));
-            hasPrevField = true;
-        }
+        // Moved timestamp to beginning of the line
 
         if (renderedFieldLabels.thread.isEnabled) {
             if (hasPrevField) {
